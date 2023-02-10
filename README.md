@@ -32,7 +32,7 @@ merge_data_bases(database_file_A, database_file_B, database_file_C)
 The repository consists of...
 - explanations of the data structure of trading bond data offered by ??
 - documentation how to use the code implementation in R
-- a ready to run program that enables you to convert your data into a database
+- a [ready to run program](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR/blob/main/code.r) that enables you to convert your data into a database
 
 ## Structure of the bond trading data
 
