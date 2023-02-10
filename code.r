@@ -347,12 +347,14 @@ populate_final_table <- function(conn_X, conn_C, n_rows_X, table_name_X, generat
 # Step 1: Convert downloaded academic data to SQLiteDB A.
 database_file_A <- ("academic_data_academic2.sqlite")
 folder_A <- ("0047-CORP-2013-01-01-2013-12-31_academic")
-# convert_downloaded_academic_data_to_sqlite_db(database_file_A, folder_A)
+convert_downloaded_academic_data_to_sqlite_db(database_file_A, folder_A)
 
 # Step 2: Convert downloaded enhanced data to SQLiteDB B.
+    # this needs to be repeated for all zip files
+    # the code will append to the existing sqlite DB file
 database_file_B <- ("academic_data_enhanced2.sqlite")
 zip_file_B <- ("EHDwC 2020.zip")
-# convert_downloaded_enhanced_data_to_sqlite_db(database_file_B, zip_file_B)
+convert_downloaded_enhanced_data_to_sqlite_db(database_file_B, zip_file_B)
 
 # Step 3: Merge two databases A and B to one final SQLiteDB with an unified schema.
 table_name_C <- ("bond_table_final_data")
