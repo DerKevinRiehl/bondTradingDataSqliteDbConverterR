@@ -351,7 +351,7 @@ folder_A <- ("0047-CORP-2013-01-01-2013-12-31_academic")
 
 # Step 2: Convert downloaded enhanced data to SQLiteDB B.
 database_file_B <- ("academic_data_enhanced2.sqlite")
-zip_file_B <- ("EHDwC 2020_KR.zip")
+zip_file_B <- ("EHDwC 2020.zip")
 # convert_downloaded_enhanced_data_to_sqlite_db(database_file_B, zip_file_B)
 
 # Step 3: Merge two databases A and B to one final SQLiteDB with an unified schema.
