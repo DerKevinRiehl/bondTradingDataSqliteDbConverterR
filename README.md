@@ -17,8 +17,9 @@ database_file_A <- ("academic_data_academic2.sqlite")
 folder_A <- ("0047-CORP-2013-01-01-2013-12-31_academic")
 convert_downloaded_academic_data_to_sqlite_db(database_file_A, folder_A)
 
-# Step 2: Convert downloaded enhanced data to SQLiteDB B. (needs to be repeated for multiple zip files)
-database_file_B <- ("academic_data_enhanced2.sqlite")
+# Step 2: Convert downloaded enhanced data to SQLiteDB B.
+    # this needs to be repeated for all zip files
+    # the code will append to the existing sqlite DB filedatabase_file_B <- ("academic_data_enhanced2.sqlite")
 zip_file_B <- ("EHDwC 2020.zip")
 convert_downloaded_enhanced_data_to_sqlite_db(database_file_B, zip_file_B)
 
