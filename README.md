@@ -4,11 +4,11 @@ Riehl, Kevin and Müller, Lukas 2023
 Chair of Coporate Finance, Technical University of Darmstadt, Germany
 
 ## Introduction
-**Motivation:** ?? bond trading data is offered by ?? in a form that makes it hard to analyse. Some parts of the data are offered as "academic data" (a set of txt files in a folder) while other parts of the data are offered as "enhanced data" (a set of zip files). This makes it hard to analyse the trading bond data in a query like fashion.
+**Motivation:** The Trade Reporting and Compliance Engine (TRACE) is the FINRA-developed vehicle that facilitates the mandatory reporting of over-the-counter transactions in eligible fixed income securities. All broker-dealers who are FINRA member firms have an obligation to report transactions in TRACE-eligible securities under an SEC-approved set of rules (https://www.finra.org/filing-reporting/trace). TRACE data can be obtained via traditional vendors (i.e., Wharton Research Data Services, WRDS) or purchased directly from FINRA. TRACE data from FINRA is provided in two variations, namely, "Academic Data" and "Enhanced Historical Data". While the information in the data itself is virtually identical, the data sets exhibit minor differences. 
 
-**Goal:** this code repository enables the reader to convert the downloaded data sets from academic and enhanced data to a SQLiteDB. 
+**Goal:** This code repository allows the recipient to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) into a SQLiteDB for further analyses using the programming language R. FINRA provides the data in .txt format, where one trading day corresponds to one file. We provide a reproducible solution for processing Academic Data and Enhanced Historical Data, and for merging both data sets to provide a final, cost-efficient database. 
 
-**Benefit:** the resulting SQLiteDB represents data in a standardized form, that can be used for further analyses easily with simple queries using SQL using a wide range of applications / programming languages.
+**Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications / programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes, e.g. in Tidy Finance in R. 
 
 **The main work flow:** of the data processing takes place in three steps:
 ```
@@ -32,7 +32,7 @@ merge_data_bases(database_file_A, database_file_B, database_file_C)
 
 **What you will find here:**
 The repository consists of...
-- explanations of the data structure of trading bond data offered by ??
+- explanations of the data structure of TRACE Academic and Enhanced Historical data offered by FINRA.
 - documentation how to use the code implementation in R
 - a [ready to run program](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR/blob/main/code.r) that enables you to convert your data into a database
 
