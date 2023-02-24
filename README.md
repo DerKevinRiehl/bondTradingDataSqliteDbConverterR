@@ -8,7 +8,7 @@ Chair of Coporate Finance, Technical University of Darmstadt, Germany
 
 **Goal:** This code repository allows the recipient to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) into a SQLiteDB for further analyses using the programming language R. FINRA provides the data in .txt format, where one trading day corresponds to one file. We provide a reproducible solution for processing Academic Data and Enhanced Historical Data, and for merging both data sets to provide a final, cost-efficient database. 
 
-**Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications / programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g. as given in Tidy Finance in R **CITE GITHUB REPO!!**. 
+**Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications / programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g. as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
 
 **The main work flow:** of the data processing takes place in three steps:
 ```
