@@ -280,7 +280,7 @@ convert_downloaded_academic_data_to_sqlite_db(conn, folder_A)
 
 # Step 4: Convert downloaded academic data and insert to SQLiteDB
 print("Start convert download enhanced data in final table...")
-zip_file_B <- ("EHDwC 2020_KR.zip")
+zip_file_B <- ("EHDwC 2020.zip")
 convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B)
 
 # Step 5: Close Connection to SQLiteDB File
