@@ -10,24 +10,30 @@ Chair of Coporate Finance, Technical University of Darmstadt, Germany
 
 **Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications / programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g. as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
 
-**The main work flow:** of the data processing takes place in three steps:
+**The main work flow:** of the data processing takes place in five steps:
 ```
-# Step 1: Convert downloaded academic data to SQLiteDB A.
-database_file_A <- ("academic_data_academic2.sqlite")
+# Step 1: Start Connection To SQLiteDB File
+database_file <- ("bond_trading_data_db.sqlite")
+conn <- dbConnect(RSQLite::SQLite(), database_file)
+print("SQL connection established...")
+
+# Step 2: Create table schema in SQLiteDB
+prepare_database_table(conn)
+print("Created table schema...")
+
+# Step 3: Convert downloaded academic data and insert to SQLiteDB
+print("Start convert download academic data in final table...")
 folder_A <- ("0047-CORP-2013-01-01-2013-12-31_academic")
-convert_downloaded_academic_data_to_sqlite_db(database_file_A, folder_A)
+convert_downloaded_academic_data_to_sqlite_db(conn, folder_A)
 
-# Step 2: Convert downloaded enhanced data to SQLiteDB B.
-    # this needs to be repeated for all zip files
-    # the code will append to the existing sqlite DB file
-database_file_B <- ("academic_data_enhanced2.sqlite")
-zip_file_B <- ("EHDwC 2020.zip")
-convert_downloaded_enhanced_data_to_sqlite_db(database_file_B, zip_file_B)
+# Step 4: Convert downloaded academic data and insert to SQLiteDB
+print("Start convert download enhanced data in final table...")
+zip_file_B <- ("EHDwC 2020_KR.zip")
+convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B)
 
-# Step 3: Merge two databases A and B to one final SQLiteDB with an unified schema.
-table_name_C <- ("bond_table_final_data")
-database_file_C <- ("final_bond_trading_data3.sqlite")
-merge_data_bases(database_file_A, database_file_B, database_file_C)
+# Step 5: Close Connection to SQLiteDB File
+dbDisconnect(conn)
+print("Connection closed and database successfully created...")
 ```
 
 **What you will find here:**
@@ -370,6 +376,20 @@ generate_sql_cmd_table_insertion <- function(table_name, db_fields, db_fields_in
 }
 ```
 
+### prepare_database_table()
+This function generates the table schema for the final SQLiteDB.
+
+```
+prepare_database_table <- function(conn) {
+  table_name <- get_data_definition("table_name", "final")
+  db_fields <- get_data_definition("db_fields", "final")
+  db_fields_int <- get_data_definition("db_fields_int", "final")
+  db_fields_real <- get_data_definition("db_fields_real", "final")
+  sql_command_create_db <- generate_sql_cmd_table_creation(table_name, db_fields, db_fields_int, db_fields_real)
+  execute_sql_command(conn, sql_command_create_db)
+}
+```
+
 ### generate_sql_cmd_write_record_A_to_C()
 This function takes a 'record' that is written from academic SQLiteDB and creates a SQL insertion statement to put it to the final table.
 
@@ -433,12 +453,13 @@ generate_sql_cmd_write_record_B_to_C <- function(record) {
 ```
 
 ### process_txt_file()
-This function will process one specific txt file from 'file_name' in 'folder' and then go through it line by line, getting all information and storing it to the database session 'conn' in table 'table_name'. For this purpose, it needs to know the 'columns_string' (to make sure the header of the txt file matches the expected format), as well as the information about fields in the db 'db_fields', 'db_fields_int', 'db_fields_real'.
+This function will process one specific txt file from 'file_name' in 'folder' and then go through it line by line, getting all information and storing it to the database session 'conn' in table 'table_name'. For this purpose, it needs to know the 'columns_string' (to make sure the header of the txt file matches the expected format), as well as the information about fields in the db 'db_fields'.
+Furthermore, separator will determine the separation character used in the txt files and the gen_sql_func_name is a function that is used to convert a record from either academic or enhanced data into the final table scheme.
 
-- **Example Input:** `process_txt_file(file_name, folder, columns_string, conn, table_name, db_fields, db_fields_int, db_fields_real)`
+- **Example Input:** `process_txt_file(file_name, folder, columns_string, separator, conn, table_name, db_fields, generate_sql_cmd_write_record_A_to_C)`
 - **Example (Console) Output:** 
 ```
-> process_txt_file(file_name, folder, columns_string, conn, table_name, db_fields, db_fields_int, db_fields_real)
+> process_txt_file(file_name, folder, columns_string, separator, conn, table_name, db_fields, gen_sql_func_name)
 Start processing file  0047-corp-academic-trace-data-2013-01-02.txt ...
 [1] "File header check correct, start processing lines..."
 Warning: invalid line will be ignored : line  54156[1] ""
@@ -447,7 +468,7 @@ Finished processing the file,  54158 lines...
 ```
 
 ```
-process_txt_file <- function(file_name, folder, columns_string, separator, conn, table_name, db_fields, db_fields_int, db_fields_real) {
+process_txt_file <- function(file_name, folder, columns_string, separator, conn, table_name, db_fields, gen_sql_func_name) {
   # loading file
   cat("Start processing file ", file_name, "...\n")
   file_reader <- file(description=paste0(folder,"/",file_name,sep=""), open="r", encoding="UTF-8", blocking = TRUE)
@@ -464,7 +485,7 @@ process_txt_file <- function(file_name, folder, columns_string, separator, conn,
       # Check validity of line
       record_values <- strsplit(line, split=separator, fixed=TRUE)[[1]]
       if(length(record_values)==length(db_fields)) {
-        sql_cmd <- generate_sql_cmd_table_insertion(table_name, db_fields, db_fields_int, db_fields_real, record_values)
+        sql_cmd <- gen_sql_func_name(record_values, table_name)
         execute_sql_command(conn, sql_cmd)
       }
       else {
@@ -488,12 +509,12 @@ process_txt_file <- function(file_name, folder, columns_string, separator, conn,
 ```
 
 ### convert_downloaded_academic_data_to_sqlite_db()
-This function converts downloaded academic data (txt files) in a 'folder' to a SQLiteDb stored in 'database_file'.
+This function converts downloaded academic data (txt files) in a 'folder' to the SQLiteDB that is connection in conn.
 
-- **Example Input:** `convert_downloaded_academic_data_to_sqlite_db("db.sqlite", "folder_txts")`
+- **Example Input:** `convert_downloaded_academic_data_to_sqlite_db(conn, "folder_txts")`
 - **Example (Console) Output:** 
 ```
-> convert_downloaded_academic_data_to_sqlite_db(table_name, database_file, folder)
+> convert_downloaded_academic_data_to_sqlite_db(conn, folder)
 [1] "SQL connection established..."
 Start processing file  0047-corp-academic-trace-data-2013-01-02.txt ...
 [1] "File header check correct, start processing lines..."
@@ -523,43 +544,42 @@ Finished processing the file,  62367 lines...
 ```
 
 ```
-convert_downloaded_academic_data_to_sqlite_db <- function(database_file, folder) {
+convert_downloaded_academic_data_to_sqlite_db <- function(conn, folder) {
   # get parameters
-  table_name <- get_data_definition("table_name", "academic")
+  table_name <- get_data_definition("table_name", "final")
   columns_string <- get_data_definition("columns_string", "academic")
   separator <- get_data_definition("separator", "academic")
   db_fields <- get_data_definition("db_fields", "academic")
-  db_fields_int <- get_data_definition("db_fields_int", "academic")
-  db_fields_real <- get_data_definition("db_fields_real", "academic")
-  # start connection to db
-  conn <- dbConnect(RSQLite::SQLite(), database_file)
-  print("SQL connection established...")
-  # create table schema in db
-  sql_command_create_db <- generate_sql_cmd_table_creation(table_name, db_fields, db_fields_int, db_fields_real)
-  execute_sql_command(conn, sql_command_create_db)
+  print("inside")
+  
   # list all files in folder
   files <- list.files(folder)
+  print("files found")
+  print("Folder")
+  print(folder)
+  print(length(files))
+  print(files)
   # loop through all files
   for (file_name in files) {
     # only consider files starting with this name
     if(! startsWith(file_name, "0047-corp-academic-trace-data")) {
       next # if not, skip this iteration and go to the next file
     }
-    process_txt_file(file_name, folder, columns_string, separator, conn, table_name, db_fields, db_fields_int, db_fields_real)
+    process_txt_file(file_name, folder, columns_string, separator, conn, table_name, db_fields, generate_sql_cmd_write_record_A_to_C)
   }
-  # Close connection to db
-  dbDisconnect(conn)
-  print("Connection closed, programme ended successfully...")
 }
 ```
 
 ### convert_downloaded_enhanced_data_to_sqlite_db()
-This function converts downloaded enhanced data (zip file) in a 'folder' to a SQLiteDb stored in 'database_file'. If applied multiple times, additional entries are added to the existing 'database_file'. This way, you can call the function with multiple zip files. Note: this function will temporarily create two temporary folders "temp" and "temp2" to extract zip files.
+This function converts downloaded enhanced data (zip file) to a SQLiteDB connected in conn. 
+If applied multiple times, additional entries are added to the existing SQLiteDB. 
+This way, you can call the function with multiple zip files. 
+Note: this function will temporarily create two temporary folders "temp" and "temp2" to extract zip files.
 
-- **Example Input:** `convert_downloaded_enhanced_data_to_sqlite_db("db.sqlite", "enhanced.zip")`
+- **Example Input:** `convert_downloaded_enhanced_data_to_sqlite_db(conn, "enhanced.zip")`
 - **Example (Console) Output:** 
 ```
-> convert_downloaded_enhanced_data_to_sqlite_db(table_name, database_file, zip_file)
+> convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file)
 [1] "SQL connection established..."
 Start processing file  enhanced-time-and-sales-cusip-2020-01-02.txt ...
 [1] "File header check correct, start processing lines..."
@@ -580,20 +600,14 @@ Finished processing the file,  91597 lines...
 ```
 
 ```
-convert_downloaded_enhanced_data_to_sqlite_db <- function(database_file, zip_file) {
+convert_downloaded_enhanced_data_to_sqlite_db <- function(conn, zip_file) {
   # get parameters
-  table_name <- get_data_definition("table_name", "enhanced")
+  table_name <- get_data_definition("table_name", "final")
   columns_string <- get_data_definition("columns_string", "enhanced")
   separator <- get_data_definition("separator", "enhanced")
   db_fields <- get_data_definition("db_fields", "enhanced")
   db_fields_int <- get_data_definition("db_fields_int", "enhanced")
   db_fields_real <- get_data_definition("db_fields_real", "enhanced")
-  # start connection to db
-  conn <- dbConnect(RSQLite::SQLite(), database_file)
-  print("SQL connection established...")
-  # create tables schema in db
-  sql_command_create_db <- generate_sql_cmd_table_creation(table_name, db_fields, db_fields_int, db_fields_real)
-  execute_sql_command(conn, sql_command_create_db)
   # list all zip files / days in given zip_file
   unlink("temp", recursive = TRUE) # delete temp folders where zip files got extracted
   unlink("temp2", recursive = TRUE)
@@ -605,71 +619,7 @@ convert_downloaded_enhanced_data_to_sqlite_db <- function(database_file, zip_fil
     unlink("temp2", recursive = TRUE)
     unzip(paste0("temp","/",zip_file_name),exdir="temp2")
     txt_file_name <- list.files("temp2")[1]
-    process_txt_file(txt_file_name, "temp2", columns_string, separator, conn, table_name, db_fields, db_fields_int, db_fields_real)
+    process_txt_file(txt_file_name, "temp2", columns_string, separator, conn, table_name, db_fields, generate_sql_cmd_write_record_B_to_C)
   }
-  # close connection to db
-  dbDisconnect(conn)
-  unlink("temp", recursive = TRUE)
-  unlink("temp2", recursive = TRUE)
-  print("Connection closed, programme ended successfully...")
-}
-```
-
-### merge_data_bases()
-This function reads academic SQLiteDB from 'database_file_A' and enhanced SQLiteDB from 'database_file_B', unifies column names, merges records and stores the result in the final SQLiteDB 'database_file_C'.
-
-```
-merge_data_bases <- function(database_file_A, database_file_B, database_file_C) {
-  # final column names
-  table_name_A <- get_data_definition("table_name", "academic")
-  table_name_B <- get_data_definition("table_name", "enhanced")
-  table_name_C <- get_data_definition("table_name", "final")
-  db_fields_C <- get_data_definition("db_fields", "final")
-  db_fields_int_C <- get_data_definition("db_fields_int", "final")
-  db_fields_real_C <- get_data_definition("db_fields_real", "final")
-  # start connection to db
-  connA <- dbConnect(RSQLite::SQLite(), database_file_A)
-  connB <- dbConnect(RSQLite::SQLite(), database_file_B)
-  connC <- dbConnect(RSQLite::SQLite(), database_file_C)
-  print("SQL connection established...")
-  # create tables schema in final db
-  sql_command_create_db <- generate_sql_cmd_table_creation(table_name_C, db_fields_C, db_fields_int_C, db_fields_real_C)
-  execute_sql_command(connC, sql_command_create_db)
-  # count number of records in db A and B
-  n_rows_a <- query_sql_command(connA, paste0("SELECT COUNT(*) FROM ",table_name_A,";",sep=""))
-  n_rows_a <- as.numeric(unlist(n_rows_a))
-  n_rows_b <- query_sql_command(connB, paste0("SELECT COUNT(*) FROM ",table_name_B,";",sep=""))
-  n_rows_b <- as.numeric(unlist(n_rows_b))
-  # populate table C with data from table A
-  populate_final_table (connA, connC, n_rows_a, table_name_A, generate_sql_cmd_write_record_A_to_C)
-  # populate table C with data from table B
-  populate_final_table (connB, connC, n_rows_b, table_name_B, generate_sql_cmd_write_record_B_to_C)
-  # close connection to db
-  dbDisconnect(connA)
-  dbDisconnect(connB)
-  dbDisconnect(connC)
-  print("Connection closed, programme ended successfully...")
-}
-```
-
-### populate_final_table()
-This function is a helping function for merge_data_bases(). It is connected to the final SQLiteDB via 'conn_C' and one more SQLiteDB 'table_name_X' via 'conn_X' (either academic or enhanced). It iterates over all 'n_rows_X' in 'conn_X' and uses 'generate_sql_cmd_function_name' function to generate SQL insert statements, and move the records from 'table_name_X' to the final table.
-
-```
-populate_final_table <- function(conn_X, conn_C, n_rows_X, table_name_X, generate_sql_cmd_function_name) {
-  table_name_C <- get_data_definition("table_name", "final")
-  dbBegin(conn_C)
-  for (i in 0:(n_rows_X-1)) {
-    query_res <- query_sql_command(conn_X, paste0("SELECT * FROM ",table_name_X," LIMIT 1 OFFSET ", toString(i), ";",sep=""))
-    query_res <- unlist(query_res)
-    sql_cmd <- generate_sql_cmd_function_name(query_res, table_name_C)
-    execute_sql_command(conn_C, sql_cmd)
-    if(i%%5000==0) {
-      cat("Adding records to final db, ",toString(i), " ", toString(n_rows_X), " lines...\n")
-      dbCommit(conn_C) # save changes to db in sqlite file
-      dbBegin(conn_C)
-    }
-  }
-  dbCommit(conn_C) # save changes to db in sqlite file
 }
 ```
