@@ -125,51 +125,55 @@ As visible from the TXT file structure, the number of columns and column names o
 ### Structure of final table
 In order to work with a merged set of final data, we propose a unified schema for the data oriented on the academic data. Following table explains the fields of the final table.
 
-| **Final Data** |                      |                       |
-|----------------|----------------------|-----------------------|
-| **Nr**         | **Field Name**       | **SQLiteDB Datatype** |
-| 1              | SOURCE               | TEXT                  |
-| 2              | REFERENCE_NUMBER     | TEXT                  |
-| 3              | BLOOMBERG_IDENTIFIER | TEXT                  |
-| 4              | REC_CT_NB            | INTEGER               |
-| 5              | TRD_ST_CD            | TEXT                  |
-| 6              | ISSUE_SYM_ID         | TEXT                  |
-| 7              | CUSIP_ID             | TEXT                  |
-| 8              | RPTG_PARTY_ID        | TEXT                  |
-| 9              | RPTG_PARTY_GVP_ID    | TEXT                  |
-| 10             | PRDCT_SBTP_CD        | TEXT                  |
-| 11             | WIS_DSTRD_CD         | TEXT                  |
-| 12             | NO_RMNRN_CD          | TEXT                  |
-| 13             | ENTRD_VOL_QT         | INTEGER               |
-| 14             | RPTD_PR              | REAL                  |
-| 15             | YLD_DRCTN_CD         | TEXT                  |
-| 16             | CALCD_YLD_PT         | REAL                  |
-| 17             | ASOF_CD              | TEXT                  |
-| 18             | TRD_EXCTN_DT         | TEXT                  |
-| 19             | TRD_EXCTN_TM         | TEXT                  |
-| 20             | TRD_RPT_DT           | TEXT                  |
-| 21             | TRD_RPT_TM           | TEXT                  |
-| 22             | TRD_STLMT_DT         | TEXT                  |
-| 23             | TRD_MDFR_LATE_CD     | TEXT                  |
-| 24             | TRD_MDFR_SRO_CD      | TEXT                  |
-| 25             | RPT_SIDE_CD          | TEXT                  |
-| 26             | BUYER_CMSN_AMT       | INTEGER               |
-| 27             | BUYER_CPCTY_CD       | TEXT                  |
-| 28             | SLLR_CMSN_AMT        | INTEGER               |
-| 29             | SLLR_CPCTY_CD        | TEXT                  |
-| 30             | CNTRA_PARTY_ID       | TEXT                  |
-| 31             | CNTRA_PARTY_GVP_ID   | TEXT                  |
-| 32             | LCKD_IN_FL           | TEXT                  |
-| 33             | ATS_FL               | TEXT                  |
-| 34             | SPCL_PR_FL           | TEXT                  |
-| 35             | TRDG_MKT_CD          | TEXT                  |
-| 36             | PBLSH_FL             | TEXT                  |
-| 37             | SYSTM_CNTRL_DT       | TEXT                  |
-| 38             | SYSTM_CNTRL_NB       | TEXT                  |
-| 39             | PREV_TRD_CNTRL_DT    | TEXT                  |
-| 40             | PREV_TRD_CNTRL_NB    | TEXT                  |
-| 41             | FIRST_TRD_CNTRL_DT   | TEXT                  |
-| 42             | FIRST_TRD_CNTRL_NB   | TEXT                  |
+| **Final Data** |                      |                       |             |
+|----------------|----------------------|-----------------------|-------------|
+| **Nr**         | **Field Name**       | **SQLiteDB Datatype** | **Example** |
+| 1              | REC_CT_NB            | INTEGER               | 1           | 
+| 2              | REF_NB               | INTEGER               | 2           | 
+| 3              | trc_st               | TEXT                  | T           | 
+| 4              | ISSUE_SYM_ID         | TEXT                  | CAT5254597  | 
+| 5              | cusip_id             | TEXT                  | 14913R2P1   | 
+| 6              | BLMBRG_ID            | TEXT                  | BBG012F5NQR4| 
+| 7              | RPTG_PARTY_ID        | TEXT                  | d1a9a1444e..| 
+| 8              | RPTG_PARTY_GVP_ID    | TEXT                  | 12345       | 
+| 9              | PRDCT_SBTP_CD        | TEXT                  | CORP        | 
+| 10             | wis_fl               | TEXT                  | N           | 
+| 11             | NO_RMNRN_CD          | TEXT                  | 12345       | 
+| 12             | entrd_vol_qt         | INTEGER               | 3000000     | 
+| 13             | rptd_pr              | REAL                  | 100.25      | 
+| 14             | YLD_DRCTN_CD         | TEXT                  | 12345       | 
+| 15             | yld_pt               | REAL                  | 7.586602    | 
+| 16             | asof_cd              | TEXT                  | 12345       | 
+| 17             | trd_exctn_dt         | TEXT                  | 20220401    | 
+| 18             | trd_exctn_tm         | TEXT                  | 80002       | 
+| 19             | trd_rpt_dt           | TEXT                  | 20220401    | 
+| 20             | trd_rpt_tm           | TEXT                  | 80002       | 
+| 21             | stlmnt_dt            | TEXT                  | 20220405    | 
+| 22             | TRD_MDFR_LATE_CD     | TEXT                  |             | 
+| 23             | TRD_MDFR_SRO_CD      | TEXT                  |             | 
+| 24             | rpt_side_cd          | TEXT                  | B           | 
+| 25             | BUYER_CMSN_AMT       | REAL                  | 10.00       | 
+| 26             | BUYER_CPCTY_CD       | TEXT                  | A           | 
+| 27             | SLLR_CMSN_AMT        | REAL                  | 12.00       | 
+| 28             | SLLR_CPCTY_CD        | TEXT                  | 12345       | 
+| 29             | RPT_PRTY_ID          | TEXT                  | D           | 
+| 30             | cntra_mp_id          | TEXT                  | D           | 
+| 31             | CNTRA_PARTY_GVP_ID   | TEXT                  |             | 
+| 32             | LCKD_IN_FL           | TEXT                  |             | 
+| 33             | ATS_FL               | TEXT                  |             | 
+| 34             | spcl_trd_fl          | TEXT                  |             | 
+| 35             | TRDG_MKT_CD          | TEXT                  | S1          | 
+| 36             | PBLSH_FL             | TEXT                  | N           | 
+| 37             | SYSTM_CNTRL_DT       | TEXT                  | 20130102    | 
+| 38             | SYSTM_CNTRL_NB       | TEXT                  | 2000000003  | 
+| 39             | pr_trd_dt            | TEXT                  | 20130103    | 
+| 40             | PREV_TRD_CNTRL_NB    | TEXT                  |             | 
+| 41             | FIRST_TRD_CNTRL_DT   | TEXT                  | 20130105    | 
+| 42             | FIRST_TRD_CNTRL_NB   | INTEGER               | 2           | 
+| 43             | msg_seq_nb           | TEXT                  | AC_2000000003 | 
+| 44             | orig_msg_seq_nb      | TEXT                  | AC_2        | 
+| 45             | days_to_sttl_ct      | INTEGER               | 4 (days between stlmnt_dt and trd_exectn_dt) | 
+
 
 ## Documentation of code
 
@@ -220,9 +224,9 @@ get_data_definition <- function(what, type) {
       return("bond_table_enhanced_data")
     }
   }
-  else { #type=="final"
+  else { #if(type=="final")
     if(what=="columns_string") {
-      return("SOURCE|REFERENCE_NUMBER|BLOOMBERG_IDENTIFIER|REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|WIS_DSTRD_CD|NO_RMNRN_CD|ENTRD_VOL_QT|RPTD_PR|YLD_DRCTN_CD|CALCD_YLD_PT|ASOF_CD|TRD_EXCTN_DT|TRD_EXCTN_TM|TRD_RPT_DT|TRD_RPT_TM|TRD_STLMT_DT|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|RPT_SIDE_CD|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|CNTRA_PARTY_ID|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|SPCL_PR_FL|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|PREV_TRD_CNTRL_DT|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB");
+	  return("REC_CT_NB|REF_NB|trc_st|ISSUE_SYM_ID|cusip_id|BLMBRG_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|wis_fl|NO_RMNRN_CD|entrd_vol_qt|rptd_pr|YLD_DRCTN_CD|yld_pt|asof_cd|trd_exctn_dt|trd_exctn_tm|trd_rpt_dt|trd_rpt_tm|stlmnt_dt|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|rpt_side_cd|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|RPT_PRTY_ID|cntra_mp_id|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|spcl_trd_fl|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|pr_trd_dt|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB|msg_seq_nb|orig_msg_seq_nb|days_to_sttl_ct");
     }
     else if(what=="separator") {
       return("|")
@@ -231,10 +235,10 @@ get_data_definition <- function(what, type) {
       return(strsplit(get_data_definition("columns_string", type), split=get_data_definition("separator", type), fixed=TRUE)[[1]]);
     }
     else if(what=="db_fields_int") {
-      return(list("REC_CT_NB", "ENTRD_VOL_QT", "BUYER_CMSN_AMT", "SLLR_CMSN_AMT"))
+      return(list("REC_CT_NB", "REF_NB", "entrd_vol_qt", "FIRST_TRD_CNTRL_NB", "days_to_sttl_ct"))
     }
     else if(what=="db_fields_real") {
-      return(list("RPTD_PR", "CALCD_YLD_PT"))
+      return(list("rptd_pr", "yld_pt", "BUYER_CMSN_AMT", "SLLR_CMSN_AMT"))
     }
     else { # table_name
       return("bond_table_final_data")
@@ -391,15 +395,16 @@ prepare_database_table <- function(conn) {
 ```
 
 ### generate_sql_cmd_write_record_A_to_C()
-This function takes a 'record' that is written from academic SQLiteDB and creates a SQL insertion statement to put it to the final table.
+This function takes a 'record' from academic data and creates a SQL insertion statement to put it to the final SQLiteDB table.
+
+- **Example Output:** `"INSERT INTO bond_table_final_data ('REC_CT_NB', 'REF_NB', 'trc_st', 'ISSUE_SYM_ID', 'cusip_id', 'BLMBRG_ID', 'RPTG_PARTY_ID', 'RPTG_PARTY_GVP_ID', 'PRDCT_SBTP_CD', 'wis_fl', 'NO_RMNRN_CD', 'entrd_vol_qt', 'rptd_pr', 'YLD_DRCTN_CD', 'yld_pt', 'asof_cd', 'trd_exctn_dt', 'trd_exctn_tm', 'trd_rpt_dt', 'trd_rpt_tm', 'stlmnt_dt', 'TRD_MDFR_LATE_CD', 'TRD_MDFR_SRO_CD', 'rpt_side_cd', 'BUYER_CMSN_AMT', 'BUYER_CPCTY_CD', 'SLLR_CMSN_AMT', 'SLLR_CPCTY_CD', 'RPT_PRTY_ID', 'cntra_mp_id', 'CNTRA_PARTY_GVP_ID', 'LCKD_IN_FL', 'ATS_FL', 'spcl_trd_fl', 'TRDG_MKT_CD', 'PBLSH_FL', 'SYSTM_CNTRL_DT', 'SYSTM_CNTRL_NB', 'pr_trd_dt', 'PREV_TRD_CNTRL_NB', 'FIRST_TRD_CNTRL_DT', 'FIRST_TRD_CNTRL_NB', 'msg_seq_nb', 'orig_msg_seq_nb', 'days_to_sttl_ct') VALUES (1, NULL, 'T', 'RBS3910852', 'N04895ZZ9', '', 'd1a9a1444e0922a25d6dc248cc687dd18bc95ea5', '', 'CORP', 'N', '', '250000.00', 107.250000, '', NULL, '', '20130107', '025108', '20130107', '080001', '20130110', '', '', 'B', 0.00, 'A', 0.00, '', '', 'C', '', '', '', '', 'S1', 'Y', '20130107', '2000000005', '', '', '20130107', 2000000005, 'AC_2000000005', 'AC_2000000005', 3);"`
 
 ```
-generate_sql_cmd_write_record_A_to_C <- function(record) {
+generate_sql_cmd_write_record_A_to_C <- function(record, table_name) {
   # determine db names
   db_fields_C <- get_data_definition("db_fields", "final") 
   db_fields_int_C <- get_data_definition("db_fields_int", "final") 
   db_fields_real_C <- get_data_definition("db_fields_real", "final") 
-  table_name <- get_data_definition("table_name", "final") 
   # render the string of all column names
   col_string <- ""
   for (field in db_fields_C) {
@@ -407,10 +412,26 @@ generate_sql_cmd_write_record_A_to_C <- function(record) {
   }
   col_string <- remove_last_chars(col_string, 2)
   # render the string of all values
-  val_string <- "'ACADEMIC', '', '', "
-  for (i in 1:(length(record))) {
-    val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  val_string <- ""
+  val_string <- add_value_to_val_string(val_string, "REC_CT_NB",    record[1], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "REF_NB",       "",        db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "trc_st",       record[2], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "ISSUE_SYM_ID", record[3], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "cusip_id",     record[4], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "BLMBRG_ID",    "",        db_fields_int_C, db_fields_real_C)
+  for (i in 5:26) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+2], record[i], db_fields_int_C, db_fields_real_C)
   }
+  val_string <- add_value_to_val_string(val_string, "RPT_PRTY_ID",      "",        db_fields_int_C, db_fields_real_C)
+  for (i in 27:39) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  msg_seq_nb <- paste0("AC_", record[35], sep = "")
+  val_string <- add_value_to_val_string(val_string, "msg_seq_nb",      msg_seq_nb,      db_fields_int_C, db_fields_real_C)
+  orig_msg_seq_nb <- paste0("AC_", record[39], sep = "")
+  val_string <- add_value_to_val_string(val_string, "orig_msg_seq_nb", orig_msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  days_to_sttl_ct <- strtoi(as.Date(record[19], format="%Y%m%d") - as.Date(record[15], format="%Y%m%d"))
+  val_string <- add_value_to_val_string(val_string, "days_to_sttl_ct", days_to_sttl_ct, db_fields_int_C, db_fields_real_C)
   val_string <- remove_last_chars(val_string, 2)
   # assemble final command
   sql_command <- paste0("INSERT INTO ", table_name, " (", col_string, ") VALUES (", val_string, ");", sep="")
@@ -419,16 +440,16 @@ generate_sql_cmd_write_record_A_to_C <- function(record) {
 ```
 
 ### generate_sql_cmd_write_record_B_to_C()
-This function takes a 'record' that is written from enhanced SQLiteDB and creates a SQL insertion statement to put it to the final table.
+This function takes a 'record' from enhanced data and creates a SQL insertion statement to put it to the final SQLiteDB table.
+
+- **Example Output:** `"INSERT INTO bond_table_final_data ('REC_CT_NB', 'REF_NB', 'trc_st', 'ISSUE_SYM_ID', 'cusip_id', 'BLMBRG_ID', 'RPTG_PARTY_ID', 'RPTG_PARTY_GVP_ID', 'PRDCT_SBTP_CD', 'wis_fl', 'NO_RMNRN_CD', 'entrd_vol_qt', 'rptd_pr', 'YLD_DRCTN_CD', 'yld_pt', 'asof_cd', 'trd_exctn_dt', 'trd_exctn_tm', 'trd_rpt_dt', 'trd_rpt_tm', 'stlmnt_dt', 'TRD_MDFR_LATE_CD', 'TRD_MDFR_SRO_CD', 'rpt_side_cd', 'BUYER_CMSN_AMT', 'BUYER_CPCTY_CD', 'SLLR_CMSN_AMT', 'SLLR_CPCTY_CD', 'RPT_PRTY_ID', 'cntra_mp_id', 'CNTRA_PARTY_GVP_ID', 'LCKD_IN_FL', 'ATS_FL', 'spcl_trd_fl', 'TRDG_MKT_CD', 'PBLSH_FL', 'SYSTM_CNTRL_DT', 'SYSTM_CNTRL_NB', 'pr_trd_dt', 'PREV_TRD_CNTRL_NB', 'FIRST_TRD_CNTRL_DT', 'FIRST_TRD_CNTRL_NB', 'msg_seq_nb', 'orig_msg_seq_nb', 'days_to_sttl_ct') VALUES (1, 0000003, 'T', 'KAISF4532226', 'G52132AU4', 'BBG00H0MKH30', '', '', 'CORP', 'N', '', '5000000.00', 98.000000, '', NULL, 'A', '20200105', '200051', '20200106', '080002', '20200108', '', '', 'B', 0.00, 'A', 0.00, '', 'D', 'C', '', '', '', 'Y', 'S1', 'Y', '', '', '', '', '20200106', 0000003, 'EN_0000003', 'EN_0000003', 3);"`
 
 ```
-generate_sql_cmd_write_record_B_to_C <- function(record) {
+generate_sql_cmd_write_record_B_to_C <- function(record, table_name) {
   # determine db names
-  db_fields_B <- get_data_definition("db_fields", "enhanced") 
-  db_fields_int_B <- get_data_definition("db_fields_int", "enhanced") 
-  db_fields_real_B <- get_data_definition("db_fields_real", "enhanced") 
   db_fields_C <- get_data_definition("db_fields", "final") 
-  table_name <- get_data_definition("table_name", "final") 
+  db_fields_int_C <- get_data_definition("db_fields_int", "final") 
+  db_fields_real_C <- get_data_definition("db_fields_real", "final") 
   # render the string of all column names
   col_string <- ""
   for (field in db_fields_C) {
@@ -436,18 +457,34 @@ generate_sql_cmd_write_record_B_to_C <- function(record) {
   }
   col_string <- remove_last_chars(col_string, 2)
   # render the string of all values
-  val_string = paste0("'ENHANCED', '", toString(record[1+1]), "', '", toString(record[5+1]), "', ", sep="")
-  val_string = paste0(val_string, convert_null_number(record[0+1]), ", '", toString(record[2+1]), "', '", toString(record[3+1]), "', '", toString(record[4+1]), "', '', '', ", sep="")
-  for (i in 7:(34-1)) {
-    val_string <- add_value_to_val_string(val_string, db_fields_B[i], record[i], db_fields_int_B, db_fields_real_B)
+  val_string <- ""
+  for (i in 1:6) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i], record[i], db_fields_int_C, db_fields_real_C)
   }
-  val_string <- paste0(val_string, "'', '', ", sep="")
-  for (i in 34:(38-1)) {
-    val_string <- add_value_to_val_string(val_string, db_fields_B[i], record[i], db_fields_int_B, db_fields_real_B)
+  val_string <- add_value_to_val_string(val_string, "RPTG_PARTY_ID",     "", db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "RPTG_PARTY_GVP_ID", "", db_fields_int_C, db_fields_real_C)
+  for (i in 7:28) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+2], record[i], db_fields_int_C, db_fields_real_C)
   }
+  val_string <- add_value_to_val_string(val_string, "CNTRA_PARTY_GVP_ID", "", db_fields_int_C, db_fields_real_C)
+  for (i in 29:33) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  val_string <- add_value_to_val_string(val_string, "SYSTM_CNTRL_DT", "", db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "SYSTM_CNTRL_NB", "", db_fields_int_C, db_fields_real_C)
+  for (i in 34:37) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+5], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  msg_seq_nb <- paste0("EN_", record[2], sep = "")
+  val_string <- add_value_to_val_string(val_string, "msg_seq_nb", msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  orig_msg_seq_nb <- paste0("EN_", record[37], sep = "")
+  val_string <- add_value_to_val_string(val_string, "orig_msg_seq_nb", orig_msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  days_to_sttl_ct <- strtoi(as.Date(record[19], format="%Y%m%d") - as.Date(record[15], format="%Y%m%d"))
+  val_string <- add_value_to_val_string(val_string, "days_to_sttl_ct", days_to_sttl_ct, db_fields_int_C, db_fields_real_C)
   val_string <- remove_last_chars(val_string, 2)
   # assemble final command
   sql_command <- paste0("INSERT INTO ", table_name, " (", col_string, ") VALUES (", val_string, ");", sep="")
+  print(sql_command)
   return(sql_command)
 }
 ```
