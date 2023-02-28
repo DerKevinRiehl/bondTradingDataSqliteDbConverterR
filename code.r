@@ -43,9 +43,9 @@ get_data_definition <- function(what, type) {
       return("bond_table_enhanced_data")
     }
   }
-  else { #type=="final"
+  else { #if(type=="final")
     if(what=="columns_string") {
-      return("SOURCE|REFERENCE_NUMBER|BLOOMBERG_IDENTIFIER|REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|WIS_DSTRD_CD|NO_RMNRN_CD|ENTRD_VOL_QT|RPTD_PR|YLD_DRCTN_CD|CALCD_YLD_PT|ASOF_CD|TRD_EXCTN_DT|TRD_EXCTN_TM|TRD_RPT_DT|TRD_RPT_TM|TRD_STLMT_DT|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|RPT_SIDE_CD|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|CNTRA_PARTY_ID|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|SPCL_PR_FL|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|PREV_TRD_CNTRL_DT|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB");
+	  return("REC_CT_NB|REF_NB|trc_st|ISSUE_SYM_ID|cusip_id|BLMBRG_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|wis_fl|NO_RMNRN_CD|entrd_vol_qt|rptd_pr|YLD_DRCTN_CD|yld_pt|asof_cd|trd_exctn_dt|trd_exctn_tm|trd_rpt_dt|trd_rpt_tm|stlmnt_dt|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|rpt_side_cd|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|RPT_PRTY_ID|cntra_mp_id|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|spcl_trd_fl|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|pr_trd_dt|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB|msg_seq_nb|orig_msg_seq_nb|days_to_sttl_ct");
     }
     else if(what=="separator") {
       return("|")
@@ -54,10 +54,10 @@ get_data_definition <- function(what, type) {
       return(strsplit(get_data_definition("columns_string", type), split=get_data_definition("separator", type), fixed=TRUE)[[1]]);
     }
     else if(what=="db_fields_int") {
-      return(list("REC_CT_NB", "ENTRD_VOL_QT", "BUYER_CMSN_AMT", "SLLR_CMSN_AMT"))
+      return(list("REC_CT_NB", "REF_NB", "entrd_vol_qt", "FIRST_TRD_CNTRL_NB", "days_to_sttl_ct"))
     }
     else if(what=="db_fields_real") {
-      return(list("RPTD_PR", "CALCD_YLD_PT"))
+      return(list("rptd_pr", "yld_pt", "BUYER_CMSN_AMT", "SLLR_CMSN_AMT"))
     }
     else { # table_name
       return("bond_table_final_data")
@@ -138,10 +138,26 @@ generate_sql_cmd_write_record_A_to_C <- function(record, table_name) {
   }
   col_string <- remove_last_chars(col_string, 2)
   # render the string of all values
-  val_string <- "'ACADEMIC', '', '', "
-  for (i in 1:(length(record))) {
-    val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  val_string <- ""
+  val_string <- add_value_to_val_string(val_string, "REC_CT_NB",    record[1], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "REF_NB",       "",        db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "trc_st",       record[2], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "ISSUE_SYM_ID", record[3], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "cusip_id",     record[4], db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "BLMBRG_ID",    "",        db_fields_int_C, db_fields_real_C)
+  for (i in 5:26) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+2], record[i], db_fields_int_C, db_fields_real_C)
   }
+  val_string <- add_value_to_val_string(val_string, "RPT_PRTY_ID",      "",        db_fields_int_C, db_fields_real_C)
+  for (i in 27:39) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  msg_seq_nb <- paste0("AC_", record[35], sep = "")
+  val_string <- add_value_to_val_string(val_string, "msg_seq_nb",      msg_seq_nb,      db_fields_int_C, db_fields_real_C)
+  orig_msg_seq_nb <- paste0("AC_", record[39], sep = "")
+  val_string <- add_value_to_val_string(val_string, "orig_msg_seq_nb", orig_msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  days_to_sttl_ct <- strtoi(as.Date(record[19], format="%Y%m%d") - as.Date(record[15], format="%Y%m%d"))
+  val_string <- add_value_to_val_string(val_string, "days_to_sttl_ct", days_to_sttl_ct, db_fields_int_C, db_fields_real_C)
   val_string <- remove_last_chars(val_string, 2)
   # assemble final command
   sql_command <- paste0("INSERT INTO ", table_name, " (", col_string, ") VALUES (", val_string, ");", sep="")
@@ -150,10 +166,9 @@ generate_sql_cmd_write_record_A_to_C <- function(record, table_name) {
 
 generate_sql_cmd_write_record_B_to_C <- function(record, table_name) {
   # determine db names
-  db_fields_B <- get_data_definition("db_fields", "enhanced") 
-  db_fields_int_B <- get_data_definition("db_fields_int", "enhanced") 
-  db_fields_real_B <- get_data_definition("db_fields_real", "enhanced") 
   db_fields_C <- get_data_definition("db_fields", "final") 
+  db_fields_int_C <- get_data_definition("db_fields_int", "final") 
+  db_fields_real_C <- get_data_definition("db_fields_real", "final") 
   # render the string of all column names
   col_string <- ""
   for (field in db_fields_C) {
@@ -161,18 +176,34 @@ generate_sql_cmd_write_record_B_to_C <- function(record, table_name) {
   }
   col_string <- remove_last_chars(col_string, 2)
   # render the string of all values
-  val_string = paste0("'ENHANCED', '", toString(record[1+1]), "', '", toString(record[5+1]), "', ", sep="")
-  val_string = paste0(val_string, convert_null_number(record[0+1]), ", '", toString(record[2+1]), "', '", toString(record[3+1]), "', '", toString(record[4+1]), "', '', '', ", sep="")
-  for (i in 7:(34-1)) {
-    val_string <- add_value_to_val_string(val_string, db_fields_B[i], record[i], db_fields_int_B, db_fields_real_B)
+  val_string <- ""
+  for (i in 1:6) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i], record[i], db_fields_int_C, db_fields_real_C)
   }
-  val_string <- paste0(val_string, "'', '', ", sep="")
-  for (i in 34:(38-1)) {
-    val_string <- add_value_to_val_string(val_string, db_fields_B[i], record[i], db_fields_int_B, db_fields_real_B)
+  val_string <- add_value_to_val_string(val_string, "RPTG_PARTY_ID",     "", db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "RPTG_PARTY_GVP_ID", "", db_fields_int_C, db_fields_real_C)
+  for (i in 7:28) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+2], record[i], db_fields_int_C, db_fields_real_C)
   }
+  val_string <- add_value_to_val_string(val_string, "CNTRA_PARTY_GVP_ID", "", db_fields_int_C, db_fields_real_C)
+  for (i in 29:33) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+3], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  val_string <- add_value_to_val_string(val_string, "SYSTM_CNTRL_DT", "", db_fields_int_C, db_fields_real_C)
+  val_string <- add_value_to_val_string(val_string, "SYSTM_CNTRL_NB", "", db_fields_int_C, db_fields_real_C)
+  for (i in 34:37) {
+	val_string <- add_value_to_val_string(val_string, db_fields_C[i+5], record[i], db_fields_int_C, db_fields_real_C)
+  }
+  msg_seq_nb <- paste0("EN_", record[2], sep = "")
+  val_string <- add_value_to_val_string(val_string, "msg_seq_nb", msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  orig_msg_seq_nb <- paste0("EN_", record[37], sep = "")
+  val_string <- add_value_to_val_string(val_string, "orig_msg_seq_nb", orig_msg_seq_nb, db_fields_int_C, db_fields_real_C)
+  days_to_sttl_ct <- strtoi(as.Date(record[19], format="%Y%m%d") - as.Date(record[15], format="%Y%m%d"))
+  val_string <- add_value_to_val_string(val_string, "days_to_sttl_ct", days_to_sttl_ct, db_fields_int_C, db_fields_real_C)
   val_string <- remove_last_chars(val_string, 2)
   # assemble final command
   sql_command <- paste0("INSERT INTO ", table_name, " (", col_string, ") VALUES (", val_string, ");", sep="")
+  print(sql_command)
   return(sql_command)
 }
 
@@ -221,15 +252,8 @@ convert_downloaded_academic_data_to_sqlite_db <- function(conn, folder) {
   columns_string <- get_data_definition("columns_string", "academic")
   separator <- get_data_definition("separator", "academic")
   db_fields <- get_data_definition("db_fields", "academic")
-  print("inside")
-  
   # list all files in folder
   files <- list.files(folder)
-  print("files found")
-  print("Folder")
-  print(folder)
-  print(length(files))
-  print(files)
   # loop through all files
   for (file_name in files) {
     # only consider files starting with this name
