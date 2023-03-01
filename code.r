@@ -203,7 +203,6 @@ generate_sql_cmd_write_record_B_to_C <- function(record, table_name) {
   val_string <- remove_last_chars(val_string, 2)
   # assemble final command
   sql_command <- paste0("INSERT INTO ", table_name, " (", col_string, ") VALUES (", val_string, ");", sep="")
-  print(sql_command)
   return(sql_command)
 }
 
