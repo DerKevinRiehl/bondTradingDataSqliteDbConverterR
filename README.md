@@ -1,16 +1,16 @@
-# (TITLE TBD) Converting Bond Trading Data to a SQLiteDB
+# Structuring of TRACE raw files into a SQLiteDB
 
 Riehl, Kevin and Müller, Lukas 2023
-Chair of Coporate Finance, Technical University of Darmstadt, Germany
+Chair of Corporate Finance, Technical University of Darmstadt, Germany
 
 ## Introduction
-**Motivation:** The Trade Reporting and Compliance Engine (TRACE) is the FINRA-developed vehicle that facilitates the mandatory reporting of over-the-counter transactions in eligible fixed income securities. All broker-dealers who are FINRA member firms have an obligation to report transactions in TRACE-eligible securities under an SEC-approved set of rules (https://www.finra.org/filing-reporting/trace). TRACE data can be obtained via traditional vendors (i.e., Wharton Research Data Services, WRDS) or purchased directly from FINRA. TRACE data from FINRA is provided in two variations, namely, "Academic Data" and "Enhanced Historical Data". While the information in the data itself is virtually identical, the data sets exhibit minor differences. 
+**Motivation:** The Trade Reporting and Compliance Engine (TRACE) is the FINRA-developed vehicle that facilitates the mandatory reporting of over-the-counter transactions in eligible fixed-income securities. All broker-dealers who are FINRA member firms have an obligation to report transactions in TRACE-eligible securities under an SEC-approved set of rules (https://www.finra.org/filing-reporting/trace). TRACE data can be obtained via traditional vendors (i.e., Wharton Research Data Services, WRDS) or purchased directly from FINRA. TRACE data from FINRA is provided in two variations, namely, "Academic Data" and "Enhanced Historical Data." While the information in the data itself is virtually identical, the data sets exhibit minor differences. 
 
 **Goal:** This code repository allows the recipient to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) into a SQLiteDB for further analyses using the programming language R. FINRA provides the data in .txt format, where one trading day corresponds to one file. We provide a reproducible solution for processing Academic Data and Enhanced Historical Data, and for merging both data sets to provide a final, cost-efficient database. 
 
-**Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications / programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g. as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
+**Benefit:** The resulting SQLiteDB represents the data in a standardized form that can be used for further analysis with simple SQL queries in a variety of applications and programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g., as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
 
-**The main work flow:** of the data processing takes place in five steps:
+**The main workflow:** of the data processing takes place in five steps:
 ```
 # Step 1: Start Connection To SQLiteDB File
 database_file <- ("bond_trading_data_db.sqlite")
@@ -45,9 +45,9 @@ The repository consists of...
 ## Structure of the bond trading data
 
 ### Structure of academic data
-The academic data is delivered as a set of TXT files in a folder. Each TXT file follows a naming convention and represents trading bond data of a single day, e.g. `0047-corp-academic-trace-data-2013-01-02.txt`.
+The academic data is delivered as a set of TXT files in a folder. Each TXT file follows a naming convention and represents trading bond data of a single day, e.g., `0047-corp-academic-trace-data-2013-01-02.txt`.
 
-The TXT files obtain a CSV like table structure inside with `|` as a separator symbol, this shows an example of the data:
+The TXT files obtain a CSV-like table structure inside with `|` as a separator symbol, and this shows an example of the data:
 ```
 REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|WIS_DSTRD_CD|NO_RMNRN_CD|ENTRD_VOL_QT|RPTD_PR|YLD_DRCTN_CD|CALCD_YLD_PT|ASOF_CD|TRD_EXCTN_DT|TRD_EXCTN_TM|TRD_RPT_DT|TRD_RPT_TM|TRD_STLMT_DT|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|RPT_SIDE_CD|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|CNTRA_PARTY_ID|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|SPCL_PR_FL|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|PREV_TRD_CNTRL_DT|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB
 1|T|BCS3930817|06740L8C2|d1a9a1444e0922a25d6dc248cc687dd18bc95ea5||CORP|N||3000000.00|100.250000||7.586602||20130102|031500|20130102|080003|20130107|||S|0.00||0.00|A|C|||||S1|Y|20130102|2000000003|||20130102|2000000003
@@ -55,7 +55,7 @@ REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_
 ...
 ```
 ### Structure of enhanced data
-The enhanced data is delivered as a set of ZIP files in a folder representing a year like `EHDwC 2020.zip`. Each of these ZIP file contains further sub-ZIP files representing single days like `enhanced-time-and-sales-cusip-2020-01-02.zip`. Finally, in these sub-ZIP files you can find TXT files representing the trading bond data of a specific day, like `enhanced-time-and-sales-cusip-2020-01-02.txt`.
+The enhanced data is delivered as a set of ZIP files in a folder representing a year like `EHDwC 2020.zip`. Each of these ZIP files contains further sub-ZIP files representing single days like `enhanced-time-and-sales-cusip-2020-01-02.zip`. Finally, in these sub-ZIP files you can find TXT files representing the trading bond data of a specific day, like `enhanced-time-and-sales-cusip-2020-01-02.txt`.
 
 ```
 ├── EHDwC 2020.zip
@@ -122,8 +122,8 @@ As visible from the TXT file structure, the number of columns and column names o
 | 38                | FIRST_TRD_CNTRL_DT | 20130102     |   | 36                  | First.Trade.Control.Date   | 20220401     |
 | 39                | FIRST_TRD_CNTRL_NB | 2000000003   |   | 37                  | First.Trade.Control.Number | 2            |
 
-### Structure of final table
-In order to work with a merged set of final data, we propose a unified schema for the data oriented on the academic data. Following table explains the fields of the final table.
+### Structure of the final table
+In order to work with a merged set of final data, we propose a unified schema for the data is oriented on the academic data. The following table explains the fields of the final table. Capitalized columns are carried over from the original data, and lowercase columns denote variables used in the code available through the functions used to clean and process the data.
 
 | **Final Data** |                      |                       |             |
 |----------------|----------------------|-----------------------|-------------|
