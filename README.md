@@ -26,7 +26,7 @@ print("Start convert download academic data in final table...")
 folder_A <- ("0047-CORP-2013-01-01-2013-12-31_academic")
 convert_downloaded_academic_data_to_sqlite_db(conn, folder_A)
 
-# Step 4: Convert downloaded academic data and insert to SQLiteDB
+# Step 4: Convert downloaded enhanced data and insert to SQLiteDB
 print("Start convert download enhanced data in final table...")
 zip_file_B <- ("EHDwC 2020.zip")
 convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B)
