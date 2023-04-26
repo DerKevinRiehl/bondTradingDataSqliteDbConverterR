@@ -1,5 +1,5 @@
 ---
-title: "Structuring of TRACE raw files into a SQLiteDB"
+title: "Streamline Your Corporate Bond Research: Convert TRACE Raw Data to SQLiteDB"
 author: [Kevin Riehl, Lukas Müller, Technical University of Darmstadt Germany]
 date: "2023-05-01"
 description: An R code that converts TRACE raw files into a SQLiteDB for facilitated analysis and filtering.
@@ -8,20 +8,20 @@ categories:
   - Data
 ---
 
-The analysis of bond trading is an interesting and emerging field in the finance literature. 
-Data for bond trades is usually available for the US market and provided by FINRA, and published via two sources, [PLAYER 1]() and [TRACE/FINRA]().
-The Trade Reporting and Compliance Engine (TRACE) data, published by FINRA, is more affordable in terms of pricing; 
-however, it comes as a set of nested ZIP files and TXT files in two different formats, which makes analysis and processing hard.
 
-Fortunately, we came up with a solution to convert the set of many files into one normalized database schema, that enables efficient and powerful analysis.
-Within this blog post we want to show you how you can leverage our [R code](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to 
-process and analyze bond trading data from TRACE and convert it into a SQLiteDB, that can be used by a variety of applications and programming languages
-for downstream analysis.
-
-In the following, we will discuss (1) the structure of bond trading data "TRACE" provided by FINRA, 
-(2) the proposed, normalized database schema for the generated SQLiteDB database,
-(3) a short hands-on tutorial on how to download data and use our [R code](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB with our code, and 
-(4) an overview of the number of bond trades we found for our downloaded copy of the FINRA TRACE data.
+Corporate bond research is gaining momentum, but data availability can be a challenge for most researchers. While FINRA makes its TRACE Enhanced Data on U.S. corporate bond trading available through vendors such as Wharton Research Data Services (WRDS), not every researcher has access to these services. Alternatively, FINRA offers its Enhanced Historical Data and Academic Data (the latter exclusively) as one-off purchases. However, organizing this data can be complex and time consuming due to the nested and zipped structure of raw .txt files, making it cumbersome for researchers to explore the exciting world of fixed income securities.
+Our R code eliminates the hassle of working with nested files, simplifying the data conversion process. Drawing from the existing SAS-based solution of Dick-Nielsen (2019), you can now easily convert TRACE data into a single, organized SQLiteDB database, allowing for seamless and efficient downstream analysis.
+Here are some key benefits:
+Accessibility: Our solution is a cost-effective alternative to accessing data from WRDS or directly from FINRA, making it accessible to researchers without WRDS. The resulting database shares symbology with WRDS and can thus be processed with existing codes, i.e., in Tidy Finance in R.
+Efficiency: Our R code streamlines the data conversion process, saving you time and effort compared to manually structuring processing nested files.
+Versatility: SQLiteDB is a widely used database format that can be utilized by various applications and programming languages, giving you flexibility in your downstream analysis.
+With our R code, you can simplify your corporate bond research and overcome current limitations. Don't let complex data organizing hold you back!
+Link to our GitHub repository: https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR
+In the following, we will discuss 
+(1) the structure of the bond trading data "TRACE" provided by FINRA, 
+(2) the proposed normalized database schema for the generated SQLiteDB database,
+(3) a brief hands-on guide to downloading data and using our [R code] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB with our code, and 
+(4) a brief overview of the number of bond trades we found for our downloaded copy of the FINRA TRACE data. 
 
 
 
