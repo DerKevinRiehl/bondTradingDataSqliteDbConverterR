@@ -230,7 +230,7 @@ print("Connection closed and database successfully created...")
 
 
 
-## (5) Final comments
+## (4) Final comments
 We hope that this blog post is helpful to the reader working with TRACE FINRA data and in facilitating analyses in this emerging, exciting, and promising field of research.
 At the end, we would like to thank the editors of Tidy Finance for their helpful suggestions and support with writing this blog post, 
 and our supervisor Prof. Dr. Dirk Schiereck from the Chair of Corporate Finance at TU Darmstadt (Germany) who made the data available for this project.
