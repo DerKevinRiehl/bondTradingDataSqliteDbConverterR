@@ -20,8 +20,7 @@ Link to our GitHub repository: https://github.com/DerKevinRiehl/bondTradingDataS
 In the following, we will discuss 
 (1) the structure of the bond trading data "TRACE" provided by FINRA, 
 (2) the proposed normalized database schema for the generated SQLiteDB database,
-(3) a brief hands-on guide to downloading data and using our [R code] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB with our code, and 
-(4) a brief overview of the number of bond trades we found for our downloaded copy of the FINRA TRACE data. 
+(3) a brief hands-on guide to downloading data and using our [R code] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB with our code 
 
 
 
@@ -229,17 +228,6 @@ print("Connection closed and database successfully created...")
 ```
 
 
-
-
-## (4) Empirical overview of TRACE bond trading data
-@LUKAS PROVIDE SOME TEXT AND SUMMARY STATISTICS, LIKE HOW MUCH ACADEMIC AND ENHANCED data (number of records) you found for each year, how much trade volume in MILLION USD,
-MAKE SOME FIGURES OUT OF IT...
-
-# date / year 
-# academic trades
-# enhacned trades
-# unique cusips
-# trade volume in mill usd
 
 
 ## (5) Final comments
