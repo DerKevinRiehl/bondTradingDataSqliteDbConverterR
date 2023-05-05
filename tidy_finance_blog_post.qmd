@@ -180,9 +180,6 @@ lowercase columns denote variables used in the code available through the functi
 
 ## (3) Hands-on tutorial to create SQLiteDB from downloaded TRACE (FINRA) data
 
-First of all, you need to get a copy of the TRACE (FINRA) data. EXPLAIN WHERE TO GET IT; WHICH WEBSITE; HOW TO PAY/ORDER AND DOWNLOAD.
-**Please note** that storing the downloaded copy on your local disk might require some more disk space (HOW MUCH?).
-
 After successfully ordering and downloading the data, you should possess all necessary raw files to start creating a SQLiteDB.
 In the following, we assume that you possess a folder with all downloaded TRACE data (enhanced and academic) called "TRACE_Downloads", with a similar structure as follows:
 ```
@@ -200,7 +197,7 @@ TRACE_Downloads/
 The below R code allows the user to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) 
 into a SQLiteDB for further analyses. For the curious reader, you can find implementation details and code documentation in our 
 [GitHub Repository](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR). 
-**Please note**, that the conversion can take some time (HOW MUCH TIME) and might require disk space (HOW MUCH SPACE).
+**Please note**, that the conversion can take some time and might require disk space (in our case for data around 2013 to 2022 around 4 days and 50 GB on a normal machine).
 
 ```{r}
 # Imports
@@ -222,12 +219,9 @@ convert_downloaded_academic_data_to_sqlite_db(conn, folder_A)
 
 # Step 4: Convert downloaded enhanced data and insert to SQLiteDB
 print("Start convert download enhanced data in final table...")
-zip_file_B_20 <- ("EHDwC 2020.zip")
-zip_file_B_21 <- ("EHDwC 2021.zip")
-zip_file_B_22 <- ("EHDwC 2022.zip")
-convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B_20)
-convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B_21)
-convert_downloaded_enhanced_data_to_sqlite_db(conn, zip_file_B_22)
+convert_downloaded_enhanced_data_to_sqlite_db(conn, "EHDwC 2020.zip")
+convert_downloaded_enhanced_data_to_sqlite_db(conn, "EHDwC 2021.zip")
+convert_downloaded_enhanced_data_to_sqlite_db(conn, "EHDwC 2022.zip")
 
 # Step 5: Close Connection to SQLiteDB File
 dbDisconnect(conn)
@@ -241,10 +235,14 @@ print("Connection closed and database successfully created...")
 @LUKAS PROVIDE SOME TEXT AND SUMMARY STATISTICS, LIKE HOW MUCH ACADEMIC AND ENHANCED data (number of records) you found for each year, how much trade volume in MILLION USD,
 MAKE SOME FIGURES OUT OF IT...
 
-
+# date / year 
+# academic trades
+# enhacned trades
+# unique cusips
+# trade volume in mill usd
 
 
 ## (5) Final comments
 We hope that this blog post is helpful to the reader working with TRACE FINRA data and in facilitating analyses in this emerging, exciting, and promising field of research.
 At the end, we would like to thank the editors of Tidy Finance for their helpful suggestions and support with writing this blog post, 
-and Prof. Dr. Dirk Schiereck from the Chair of Corporate Finance who made the data available for this project.
+and our supervisor Prof. Dr. Dirk Schiereck from the Chair of Corporate Finance at TU Darmstadt (Germany) who made the data available for this project.
