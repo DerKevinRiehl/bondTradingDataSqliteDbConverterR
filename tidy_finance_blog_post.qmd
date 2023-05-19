@@ -8,32 +8,27 @@ categories:
   - Data
 ---
 
-
 Corporate bond research is gaining momentum, but data availability can be a challenge for most researchers. While FINRA makes its TRACE Enhanced Data on U.S. corporate bond trading available through vendors such as Wharton Research Data Services (WRDS), not every researcher has access to these services. Alternatively, FINRA offers its Enhanced Historical Data and Academic Data (the latter exclusively) as one-off purchases. However, organizing this data can be complex and time consuming due to the nested and zipped structure of raw .txt files, making it cumbersome for researchers to explore the exciting world of fixed income securities.
-Our R code eliminates the hassle of working with nested files, simplifying the data conversion process. Drawing from the existing SAS-based solution of Dick-Nielsen (2019), you can now easily convert TRACE data into a single, organized SQLiteDB database, allowing for seamless and efficient downstream analysis.
-Here are some key benefits:
-Accessibility: Our solution is a cost-effective alternative to accessing data from WRDS or directly from FINRA, making it accessible to researchers without WRDS. The resulting database shares symbology with WRDS and can thus be processed with existing codes, i.e., in Tidy Finance in R.
-Efficiency: Our R code streamlines the data conversion process, saving you time and effort compared to manually structuring processing nested files.
-Versatility: SQLiteDB is a widely used database format that can be utilized by various applications and programming languages, giving you flexibility in your downstream analysis.
-With our R code, you can simplify your corporate bond research and overcome current limitations. Don't let complex data organizing hold you back!
-Link to our GitHub repository: https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR
-In the following, we will discuss 
-(1) the structure of the bond trading data "TRACE" provided by FINRA, 
-(2) the proposed normalized database schema for the generated SQLiteDB database,
-(3) a brief hands-on guide to downloading data and using our [R code] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB with our code 
 
+Our R code enables you organizing the TRACE academic data and TRACE enhanced data by eliminating the complexities of multiple, nested files, simplifying the data conversion process. Drawing from the existing SAS-based solution of Dick-Nielsen (2014) [^1] and (2019) [^2], you can now easily convert TRACE data into a single, organized SQLiteDB database, allowing for seamless and efficient downstream analysis.
 
+Here are the key benefits our solution offers:
+- **Accessibility**: Our solution is a cost-effective alternative to accessing data from WRDS or directly from FINRA, making it accessible to researchers without WRDS. The resulting database shares symbology with WRDS and can thus be processed with existing codes, i.e., in Tidy Finance in R.
+- **Efficiency**: Our R code streamlines the data conversion process, saving you time and effort compared to manually structuring processing nested files.
+- **Versatility**: SQLiteDB is a widely used database format that can be utilized by various applications and programming languages, giving you flexibility in your downstream analysis.
+- **Open-Source Code**: We provide our solution as R code available on [GitHub] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR).
 
+With our R code, you can simplify your corporate bond research and overcome current limitations. Don't let complex data organizing hold you back! Prepare yourself to be immersed in the extraordinary realm of TRACE, the key to unlock a deeper understanding of over-the-counter transactions and to unveil the mysterious pathways of fixed-income securities. With TRACE as your guide, you will embark on a journey of discovery, unraveling market trends and unearthing invaluable insights that will forever enrich your understanding of this mesmerizing world. Embrace the power of TRACE and unveil the secrets that lie within.
+
+In the following, we will discuss first, the structure of the bond trading data "TRACE" provided by FINRA, second the proposed normalized database schema for the generated SQLiteDB database, and finally third, give you a brief hands-on guide to downloading data and using our [R code] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR) to generate the SQLiteDB. 
 
 ## (1) Structure of the bond trading data from TRACE / FINRA
-The TRACE is the FINRA-developed vehicle that facilitates the mandatory reporting of over-the-counter transactions in eligible fixed-income securities. 
-All broker-dealers who are FINRA member firms have an obligation to report transactions in TRACE-eligible securities under an SEC-approved set of rules 
-(https://www.finra.org/filing-reporting/trace). TRACE data can be obtained via traditional vendors (i.e., Wharton Research Data Services, WRDS) or 
-purchased directly from FINRA. TRACE data from FINRA is provided in two variations, namely, "Academic Data" and "Enhanced Historical Data." 
-While the information in the data itself is virtually identical, the data sets exhibit minor differences. 
 
-**The academic data** is delivered as a set of TXT files in a folder. Each TXT file follows a naming convention and represents trading bond data of a single day, e.g., `0047-corp-academic-trace-data-2013-01-02.txt`.
-The TXT files obtain a CSV-like table structure inside with `|` as a separator symbol, and this shows an example of the data:
+Introducing TRACE, a powerful tool developed by FINRA to facilitate the mandatory reporting of over-the-counter transactions in eligible fixed-income securities. As a FINRA member, broker-dealers have an obligation to report transactions in TRACE-eligible securities, following SEC-approved rules (https://www.finra.org/filing-reporting/trace).
+
+Accessing TRACE data is a straightforward process. You can obtain it through established vendors like Wharton Research Data Services (WRDS) or purchase it directly from FINRA. The data comes in two variations: "TRACE Academic Data" and "TRACE Enhanced Historical Data," which have minor differences while containing similar information. While the information in the data itself is virtually identical, the data sets exhibit minor differences. TRACE provides a valuable resource for understanding over-the-counter transactions and gaining insights into market trends for fixed-income securities. Explore TRACE and unlock a wealth of information that will enhance your understanding of over-the-counter transactions and the world of fixed-income securities.
+
+**The academic data** is delivered as a set of TXT files in a folder. Each TXT file follows a naming convention and represents trading bond data of a single day, e.g., `0047-corp-academic-trace-data-2013-01-02.txt`. The TXT files obtain a CSV-like table structure inside with `|` as a separator symbol, and this shows an example of the data:
 ```
 REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_SBTP_CD|WIS_DSTRD_CD|NO_RMNRN_CD|ENTRD_VOL_QT|RPTD_PR|YLD_DRCTN_CD|CALCD_YLD_PT|ASOF_CD|TRD_EXCTN_DT|TRD_EXCTN_TM|TRD_RPT_DT|TRD_RPT_TM|TRD_STLMT_DT|TRD_MDFR_LATE_CD|TRD_MDFR_SRO_CD|RPT_SIDE_CD|BUYER_CMSN_AMT|BUYER_CPCTY_CD|SLLR_CMSN_AMT|SLLR_CPCTY_CD|CNTRA_PARTY_ID|CNTRA_PARTY_GVP_ID|LCKD_IN_FL|ATS_FL|SPCL_PR_FL|TRDG_MKT_CD|PBLSH_FL|SYSTM_CNTRL_DT|SYSTM_CNTRL_NB|PREV_TRD_CNTRL_DT|PREV_TRD_CNTRL_NB|FIRST_TRD_CNTRL_DT|FIRST_TRD_CNTRL_NB
 1|T|BCS3930817|06740L8C2|d1a9a1444e0922a25d6dc248cc687dd18bc95ea5||CORP|N||3000000.00|100.250000||7.586602||20130102|031500|20130102|080003|20130107|||S|0.00||0.00|A|C|||||S1|Y|20130102|2000000003|||20130102|2000000003
@@ -41,8 +36,7 @@ REC_CT_NB|TRD_ST_CD|ISSUE_SYM_ID|CUSIP_ID|RPTG_PARTY_ID|RPTG_PARTY_GVP_ID|PRDCT_
 ...
 ```
 
-**The enhanced data** is delivered as a set of ZIP files in a folder representing a year like `EHDwC 2020.zip`. Each of these ZIP files contains further sub-ZIP files representing single days like `enhanced-time-and-sales-cusip-2020-01-02.zip`. 
-Finally, in these sub-ZIP files, you can find TXT files representing the trading bond data of a specific day, like `enhanced-time-and-sales-cusip-2020-01-02.txt`.
+**The enhanced data** is delivered as a set of ZIP files in a folder representing a year like `EHDwC 2020.zip`. Each of these ZIP files contains further sub-ZIP files representing single days like `enhanced-time-and-sales-cusip-2020-01-02.zip`. Finally, in these sub-ZIP files, you can find TXT files representing the trading bond data of a specific day, like `enhanced-time-and-sales-cusip-2020-01-02.txt`.
 
 ```
 ├── EHDwC 2020.zip
@@ -110,18 +104,10 @@ Record Count Num|Reference Number|Trade Status|TRACE Symbol|CUSIP|Bloomberg Iden
 
 : Comparison of table structure {#tbl-comparison}
 
-
-
-
 ## (2) Structure of normalized SQLiteDB database
-In order to work with a merged set of final data, we propose an unified schema for the data, which is oriented on the academic data. 
-The resulting SQLiteDB represents the data in a standardized and normalized form that can be used for further analysis with simple 
-SQL queries in a variety of applications and programming languages. The resulting database shares template and labeling with WRDS 
-and can therefore seamlessly interface with existing program codes for cleaning the data, e.g., 
-as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
+In order to work with a merged set of final data, we propose an unified schema for the data, which is oriented on the academic data. The resulting SQLiteDB represents the data in a standardized and normalized form that can be used for further analysis with simple SQL queries in a variety of applications and programming languages. The resulting database shares template and labeling with WRDS and can therefore seamlessly interface with existing program codes for cleaning the data, e.g., as given in Tidy Finance in R (https://gist.github.com/patrick-weiss/3a05b3ab281563b2e94858451c2eb3a4). 
 
-@tbl-finaltable explains the fields of the final table. Capitalized columns are carried over from the original data, and 
-lowercase columns denote variables used in the code available through the functions used to clean and process the data.
+@tbl-finaltable explains the fields of the final table. Capitalized columns are carried over from the original data, and lowercase columns denote variables used in the code available through the functions used to clean and process the data.
 
 | **Final Data** |                      |                       |             |
 |----------------|----------------------|-----------------------|-------------|
@@ -174,13 +160,9 @@ lowercase columns denote variables used in the code available through the functi
 
 : Structure of normalized SQLiteDB database {#tbl-finaltable}
 
-
-
-
 ## (3) Hands-on tutorial to create SQLiteDB from downloaded TRACE (FINRA) data
 
-After successfully ordering and downloading the data, you should possess all necessary raw files to start creating a SQLiteDB.
-In the following, we assume that you possess a folder with all downloaded TRACE data (enhanced and academic) called "TRACE_Downloads", with a similar structure as follows:
+After successfully ordering and downloading the data, you should possess all necessary raw files to start creating a SQLiteDB. In the following, we assume that you possess a folder with all downloaded TRACE data (enhanced and academic) called "TRACE_Downloads", with a similar structure as follows:
 ```
 TRACE_Downloads/
 ├── academic_txts/
@@ -193,12 +175,12 @@ TRACE_Downloads/
 ├── ...
 ```
 
-The below R code allows the user to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) 
-into a SQLiteDB for further analyses. For the curious reader, you can find implementation details and code documentation in our 
-[GitHub Repository](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR). 
+The below R code allows the user to convert the raw data provided by FINRA (Academic Data as well as Enhanced Historical Data) into a SQLiteDB for further analyses. For the curious reader, you can find implementation details and code documentation in our [GitHub Repository](https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR). 
+
 **Please note**, that the conversion can take some time and might require disk space (in our case for data around 2013 to 2022 around 4 days and 50 GB on a normal machine).
 
 ```{r}
+#| eval: false
 # Imports
 library(DBI)
 
@@ -227,10 +209,12 @@ dbDisconnect(conn)
 print("Connection closed and database successfully created...")
 ```
 
+## Final comments 
+We hope that this blog post is helpful to the reader working with TRACE academic data and TRACE enhanced data and in facilitating analyses in this emerging, exciting, and promising field of research.
 
+## Acknowledgements
+At the end, we would like to thank the editors of Tidy Finance for their helpful suggestions and support with writing this blog post, and our supervisor Prof. Dr. Dirk Schiereck from the [Chair of Corporate Finance at TU Darmstadt (Germany)](https://www.cofi.wi.tu-darmstadt.de/index.en.jsp) who made the data available for this project.
 
-
-## Final comments & acknowledgements
-We hope that this blog post is helpful to the reader working with TRACE FINRA data and in facilitating analyses in this emerging, exciting, and promising field of research.
-At the end, we would like to thank the editors of Tidy Finance for their helpful suggestions and support with writing this blog post, 
-and our supervisor Prof. Dr. Dirk Schiereck from the Chair of Corporate Finance at TU Darmstadt (Germany) who made the data available for this project.
+## References
+[^1] Dick-Nielsen, J. (2014). How to clean enhanced TRACE data. Available at [SSRN 2337908] (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2337908).
+[^2] Dick-Nielsen, J., & Poulsen, T. K. (2019). How to clean academic trace data. Available at [SSRN 3456082] (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3456082).
