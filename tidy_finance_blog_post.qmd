@@ -17,6 +17,7 @@ Here are the key benefits our solution offers:
 - **Efficiency**: Our R code streamlines the data conversion process, saving you time and effort compared to manually structuring processing nested files.
 - **Versatility**: SQLiteDB is a widely used database format that can be utilized by various applications and programming languages, giving you flexibility in your downstream analysis.
 - **Open-Source Code**: We provide our solution as R code available on [GitHub] (https://github.com/DerKevinRiehl/bondTradingDataSqliteDbConverterR).
+- **TRACE academic data**: TRACE academic data is only available as a one-off purchase directly from FINRA. We provide a tool to organize and process the raw data files you receive from TRACE to save you hours of work!
 
 With our R code, you can simplify your corporate bond research and overcome current limitations. Don't let complex data organizing hold you back! Prepare yourself to be immersed in the extraordinary realm of TRACE, the key to unlock a deeper understanding of over-the-counter transactions and to unveil the mysterious pathways of fixed-income securities. With TRACE as your guide, you will embark on a journey of discovery, unraveling market trends and unearthing invaluable insights that will forever enrich your understanding of this mesmerizing world. Embrace the power of TRACE and unveil the secrets that lie within.
 
